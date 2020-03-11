@@ -28,7 +28,7 @@ namespace BrickBreaker
             {
                 var peaceSet = Instantiate(settings.peaceSetProto, Vector3.zero, Quaternion.identity);
                 peaceSet.transform.SetParent(transform);
-                peaceSet.transform.localRotation = Quaternion.Euler(0, i % 2 == 0 ? 180 : 0, angleBetweenSplits * i + (angleBetweenSplits / 2f));
+                peaceSet.transform.localRotation = Quaternion.Euler(0, 0, angleBetweenSplits * i);
                 _sets.Add(peaceSet);
             }
         }

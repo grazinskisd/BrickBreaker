@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   peaceSetProto: {fileID: 7349055145342731405, guid: 6fc8515ea37a7764b92c5335cb9f9674,
     type: 3}
-  splits: 10
+  splits: 5
