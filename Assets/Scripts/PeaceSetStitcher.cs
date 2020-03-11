@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace BrickBreaker
 {
-    public class PeceSetStitcher : MonoBehaviour
+    public class PeaceSetStitcher : MonoBehaviour
     {
-        public GameObject peaceSetProto;
-        [Range(4, 40)]
-        public int splits;
+        public StitcherSettings settings;
 
         private int _oldSplits;
 
@@ -23,14 +19,14 @@ namespace BrickBreaker
 
         private void StitchSets()
         {
-            _oldSplits = splits;
+            _oldSplits = settings.splits;
 
-            float angleBetweenSplits = 360f / splits;
+            float angleBetweenSplits = 360f / settings.splits;
             Vector3 result = Quaternion.AngleAxis((angleBetweenSplits / 2f), Vector3.forward) * Vector3.up;
 
-            for (int i = 0; i < splits; i++)
+            for (int i = 0; i < settings.splits; i++)
             {
-                var peaceSet = Instantiate(peaceSetProto, Vector3.zero, Quaternion.identity);
+                var peaceSet = Instantiate(settings.peaceSetProto, Vector3.zero, Quaternion.identity);
                 peaceSet.transform.SetParent(transform);
                 peaceSet.transform.localRotation = Quaternion.Euler(0, i % 2 == 0 ? 180 : 0, angleBetweenSplits * i + (angleBetweenSplits / 2f));
                 _sets.Add(peaceSet);
@@ -48,7 +44,7 @@ namespace BrickBreaker
 
         private void Update()
         {
-            if(_oldSplits != splits)
+            if(_oldSplits != settings.splits)
             {
                 DeleteSets();
                 StitchSets();
