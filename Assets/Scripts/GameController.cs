@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+namespace BrickBreaker
 {
-    // Start is called before the first frame update
-    void Start()
+    public class GameController : MonoBehaviour
     {
-        
-    }
+        public Ball ball;
+        public float startForce;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ball.RigidBody2D.AddForce(Vector2.up * startForce);
+            }
+        }
     }
 }
