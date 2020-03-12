@@ -9,11 +9,19 @@ namespace BrickBreaker
 
         private int _oldSplits;
 
-        private List<GameObject> _sets;
+        private List<PeaceSet> _sets;
 
-        private void Start()
+        public List<PeaceSet> PeaceSets
         {
-            _sets = new List<GameObject>();
+            get
+            {
+                return _sets;
+            }
+        }
+
+        private void Awake()
+        {
+            _sets = new List<PeaceSet>();
             StitchSets();
         }
 

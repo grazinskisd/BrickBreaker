@@ -5,7 +5,7 @@ namespace BrickBreaker
     [CreateAssetMenu(menuName = "BrickBreaker/StitcherSettings")]
     public class StitcherSettings : ScriptableObject
     {
-        public GameObject peaceSetProto;
+        public PeaceSet peaceSetProto;
         public int splits;
     }
 }

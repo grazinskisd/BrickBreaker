@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb8029713eb9bda4c86208a60be55887, type: 3}
   m_Name: Set1
   m_EditorClassIdentifier: 
-  peaceSetProto: {fileID: 7349055145342731405, guid: 6fc8515ea37a7764b92c5335cb9f9674,
+  peaceSetProto: {fileID: 24664234743563958, guid: 6fc8515ea37a7764b92c5335cb9f9674,
     type: 3}
   splits: 5
