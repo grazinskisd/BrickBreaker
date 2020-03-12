@@ -37,6 +37,11 @@ namespace BrickBreaker
                 ball.transform.SetParent(null);
                 _isBallReleased = true;
             }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
         }
     }
 }
