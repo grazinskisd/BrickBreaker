@@ -45,7 +45,7 @@ namespace BrickBreaker
         {
             for (int i = 0; i < _sets.Count; i++)
             {
-                Destroy(_sets[i]);
+                Destroy(_sets[i].gameObject);
             }
             _sets.Clear();
         }

@@ -6,17 +6,17 @@ namespace BrickBreaker
     public class PeacesController : MonoBehaviour
     {
         public Text scoreText;
-        public PeaceSetStitcher stitcher;
+        public Map map;
 
         private int _score;
 
         private void Start()
         {
-            for (int i = 0; i < stitcher.PeaceSets.Count; i++)
+            for (int i = 0; i < map.sets.Count; i++)
             {
-                for (int j = 0; j < stitcher.PeaceSets[i].peaces.Length; j++)
+                for (int j = 0; j < map.sets[i].peaces.Length; j++)
                 {
-                    Peace peace = stitcher.PeaceSets[i].peaces[j];
+                    Peace peace = map.sets[i].peaces[j];
                     peace.OnCollisionEnter += ProcessPeaceCollision;
                 }
             }
