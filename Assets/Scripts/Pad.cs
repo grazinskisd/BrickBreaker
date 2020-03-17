@@ -31,6 +31,7 @@ namespace BrickBreaker
             main.startColor = _color;
             _renderer.color = _color;
             _line.startColor = _color;
+            _line.endColor = _color;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
