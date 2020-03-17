@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace BrickBreaker
 {
@@ -8,38 +9,56 @@ namespace BrickBreaker
         public float maxX;
         public float moveSpeed;
 
-        private Pad[] _pads;
+        private List<Pad> _pads;
 
         private void Awake()
         {
-            _pads = new Pad[transform.childCount];
+            _pads = new List<Pad>(transform.childCount);
             for (int i = 0; i < transform.childCount; i++)
             {
-                _pads[i] = transform.GetChild(i).GetChild(0).GetComponent<Pad>();
+                if (transform.GetChild(i).gameObject.activeInHierarchy)
+                {
+                    _pads.Add(transform.GetChild(i).GetChild(0).GetComponent<Pad>());
+                    Debug.Log("Add pad");
+                }
             }
         }
 
         private void Update()
         {
+            if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+            {
+                StopPads();
+            }
+
             if (Input.GetKey(KeyCode.A))
+            {
+                MovePads(-1);
+            }
+            else if (Input.GetKey(KeyCode.D))
             {
                 MovePads(1);
             }
+        }
 
-            if (Input.GetKey(KeyCode.D))
+        private void StopPads()
+        {
+            for (int i = 0; i < _pads.Count; i++)
             {
-                MovePads(-1);
+                _pads[i].SetThrustEmiting(0);
             }
         }
 
         private void MovePads(int directionSign)
         {
-            for (int i = 0; i < _pads.Length; i++)
+            for (int i = 0; i < _pads.Count; i++)
             {
                 Pad pad = _pads[i];
                 Vector3 position = pad.transform.localPosition;
-                position.x = Mathf.Clamp(position.x + (i % 2 == 0 ? -directionSign : directionSign) * Time.deltaTime * moveSpeed, minX, maxX);
+                int direction = (i % 2 == 0 ? -directionSign : directionSign);
+                position.x = Mathf.Clamp(position.x + direction * Time.deltaTime * moveSpeed, minX, maxX);
                 pad.transform.localPosition = position;
+                pad.SetThrustEmiting(direction);
             }
         }
     }
