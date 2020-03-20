@@ -11,14 +11,18 @@ namespace BrickBreaker
         public event BallTriggerEnterEventHandler OnTriggerEnter;
         public event BallCollisionEnterHandler OnCollisionEnter;
 
-        private Rigidbody2D _rigidBody;
-
+        public ParticleSystem particleSystem;
         public Vector2 velocity;
+        public TrailRenderer trail;
+
+        private Rigidbody2D _rigidBody;
+        private SpriteRenderer _spriteRenderer;
 
         private void Awake()
         {
             _rigidBody = GetComponent<Rigidbody2D>();
             _rigidBody.isKinematic = false;
+            _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -34,6 +38,13 @@ namespace BrickBreaker
         private void FixedUpdate()
         {
             transform.Translate(velocity * Time.deltaTime);
+        }
+
+        public void StartDestructionSequence()
+        {
+            _spriteRenderer.enabled = false;
+            trail.emitting = false;
+            particleSystem.Emit(30);
         }
     }
 }

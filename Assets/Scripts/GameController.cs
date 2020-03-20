@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace BrickBreaker
@@ -95,14 +96,27 @@ namespace BrickBreaker
         {
             if (IsLayerInMask(other.gameObject.layer, killBoxLayerMask))
             {
-                Destroy(sender.gameObject);
+                sender.StartDestructionSequence();
+                StartCoroutine(DestroyDelayed(sender));
                 _ballCount--;
             }
 
             if(_ballCount == 0)
             {
-                SceneManager.LoadScene(0);
+                StartCoroutine(RestartSceneDelayed());
             }
+        }
+
+        private IEnumerator RestartSceneDelayed()
+        {
+            yield return new WaitForSeconds(1);
+            SceneManager.LoadScene(0);
+        }
+
+        private IEnumerator DestroyDelayed(Ball ball)
+        {
+            yield return new WaitForSeconds(1);
+            Destroy(ball.gameObject);
         }
 
         private bool IsLayerInMask(int layer, LayerMask mask)
