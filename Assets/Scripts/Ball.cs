@@ -13,9 +13,12 @@ namespace BrickBreaker
 
         private Rigidbody2D _rigidBody;
 
+        public Vector2 velocity;
+
         private void Awake()
         {
             _rigidBody = GetComponent<Rigidbody2D>();
+            _rigidBody.isKinematic = false;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -28,12 +31,9 @@ namespace BrickBreaker
             OnTriggerEnter?.Invoke(this, collision);
         }
 
-        public Rigidbody2D RigidBody2D
+        private void FixedUpdate()
         {
-            get
-            {
-                return _rigidBody;
-            }
+            transform.Translate(velocity * Time.deltaTime);
         }
     }
 }

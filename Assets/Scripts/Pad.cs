@@ -21,7 +21,20 @@ namespace BrickBreaker
         [SerializeField]
         public Color _color;
 
+        [Header("Debug")]
+        [SerializeField]
+        private bool _shouldDrawBounceLines;
+
         private int _previousDirection;
+        private BoxCollider2D _collider;
+
+        public BoxCollider2D Collider
+        {
+            get
+            {
+                return _collider;
+            }
+        }
 
         private void Awake()
         {
@@ -32,58 +45,67 @@ namespace BrickBreaker
             _renderer.color = _color;
             _line.startColor = _color;
             _line.endColor = _color;
+            _collider = GetComponent<BoxCollider2D>();
         }
 
-        //private void Start()
-        //{
-        //    BoxCollider2D collider = GetComponent<BoxCollider2D>();
+        private void Start()
+        {
+            if (_shouldDrawBounceLines)
+            {
+                DrawBounceLines();
+            }
+        }
 
-        //    Vector2 collisionNormal = transform.up;
-        //    Bounds otherBounds = collider.bounds;
-        //    Vector2 extents = collider.size * transform.localScale * 0.5f;
-        //    Vector2 center = new Vector2(otherBounds.center.x, otherBounds.center.y) + (collisionNormal * extents.y);
-        //    Debug.Log(extents);
-        //    CreateSphere(center);
-        //    Vector2 point = center;
+        private void DrawBounceLines()
+        {
+            BoxCollider2D collider = GetComponent<BoxCollider2D>();
 
-        //    float part = extents.x / 10;
+            Vector2 collisionNormal = transform.up;
+            Bounds otherBounds = collider.bounds;
+            Vector2 extents = collider.size * transform.localScale * 0.5f;
+            Vector2 center = new Vector2(otherBounds.center.x, otherBounds.center.y) + (collisionNormal * extents.y);
+            Debug.Log(extents);
+            CreateSphere(center);
+            Vector2 point = center;
 
-        //    for (int i = -10; i <= 10; i++)
-        //    {
-        //        var right = transform.right * (part * i);
-        //        point = center + new Vector2(right.x, right.y);
+            float part = extents.x / 10;
 
-        //        float angle = AngleDir(Vector3.forward, point, center) * (Vector2.Distance(center, point) / extents.x) * 60;
-        //        Vector2 newVelocityVector = Quaternion.AngleAxis(angle, Vector3.forward) * collisionNormal;
-        //        Debug.DrawLine(point, point + newVelocityVector, Color.red, 10);
-        //    }
-        //}
+            for (int i = -10; i <= 10; i++)
+            {
+                var right = transform.right * (part * i);
+                point = center + new Vector2(right.x, right.y);
 
-        //public float AngleDir(Vector3 fwd, Vector3 targetDir, Vector3 up)
-        //{
-        //    Vector3 perp = Vector3.Cross(fwd, targetDir);
-        //    float dir = Vector3.Dot(perp, up);
+                float angle = AngleDir(Vector3.forward, point, center) * (Vector2.Distance(center, point) / extents.x) * 60;
+                Vector2 newVelocityVector = Quaternion.AngleAxis(angle, Vector3.forward) * collisionNormal;
+                Debug.DrawLine(point, point + newVelocityVector, Color.red, 10);
+            }
+        }
 
-        //    if (dir > 0.0f)
-        //    {
-        //        return 1.0f;
-        //    }
-        //    else if (dir < 0.0f)
-        //    {
-        //        return -1.0f;
-        //    }
-        //    else
-        //    {
-        //        return 0.0f;
-        //    }
-        //}
+        public float AngleDir(Vector3 fwd, Vector3 targetDir, Vector3 up)
+        {
+            Vector3 perp = Vector3.Cross(fwd, targetDir);
+            float dir = Vector3.Dot(perp, up);
 
-        //private static void CreateSphere(Vector2 point)
-        //{
-        //    var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        //    go.transform.localScale = Vector3.one * 0.1f;
-        //    go.transform.position = point;
-        //}
+            if (dir > 0.0f)
+            {
+                return 1.0f;
+            }
+            else if (dir < 0.0f)
+            {
+                return -1.0f;
+            }
+            else
+            {
+                return 0.0f;
+            }
+        }
+
+        private static void CreateSphere(Vector2 point)
+        {
+            var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            go.transform.localScale = Vector3.one * 0.1f;
+            go.transform.position = point;
+        }
 
         public bool IsLeftEmiting
         {

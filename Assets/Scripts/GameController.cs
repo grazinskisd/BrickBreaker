@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace BrickBreaker
@@ -7,7 +6,7 @@ namespace BrickBreaker
     public class GameController : MonoBehaviour
     {
         public Ball[] balls;
-        public float startForce;
+        public float startVelocity;
         public LayerMask killBoxLayerMask;
         public float maxBounceAngle;
 
@@ -35,18 +34,34 @@ namespace BrickBreaker
 
             if (contact.collider.CompareTag("Pad"))
             {
-                Vector2 velocity = sender.RigidBody2D.velocity;
-                BoxCollider2D collider = contact.collider.GetComponent<BoxCollider2D>();
-                Vector2 collisionNormal = contact.normal;
-                Vector2 boundsCenter = collider.bounds.center;
-                Vector2 point = contact.point;
-                Vector2 extents = collider.size * collider.transform.localScale * 0.5f;
-                Vector2 center = new Vector2(boundsCenter.x, boundsCenter.y) + (collisionNormal * extents.y);
-                float angleDir = AngleDir(Vector3.forward, point, center);
-                float angle = angleDir * (Vector2.Distance(center, point) / extents.x) * maxBounceAngle;
-                Vector2 newVelocityVector = Quaternion.AngleAxis(angle, Vector3.forward) * collisionNormal;
-                sender.RigidBody2D.velocity = newVelocityVector * velocity.magnitude;
+                BounceBallOffPad(sender, contact);
             }
+            else
+            {
+                NormalBounce(sender, contact);
+            }
+        }
+
+        private void NormalBounce(Ball sender, ContactPoint2D contact)
+        {
+            var velocity = sender.velocity;
+            var speed = velocity.magnitude;
+            var direction = Vector3.Reflect(velocity.normalized, contact.normal);
+            sender.velocity = direction * speed;
+        }
+
+        private void BounceBallOffPad(Ball sender, ContactPoint2D contact)
+        {
+            BoxCollider2D collider = contact.collider.GetComponent<Pad>().Collider;
+            Vector2 collisionNormal = contact.normal;
+            Vector2 boundsCenter = collider.bounds.center;
+            Vector2 point = contact.point;
+            Vector2 extents = collider.size * collider.transform.localScale * 0.5f;
+            Vector2 center = new Vector2(boundsCenter.x, boundsCenter.y) + (collisionNormal * extents.y);
+            float angleDir = AngleDir(Vector3.forward, point, center);
+            float angle = angleDir * (Vector2.Distance(center, point) / extents.x) * maxBounceAngle;
+            Vector2 newVelocityVector = Quaternion.AngleAxis(angle, Vector3.forward) * collisionNormal;
+            sender.velocity = newVelocityVector * sender.velocity.magnitude;
         }
 
         //returns -1 when to the left, 1 to the right, and 0 for forward/backward
@@ -114,7 +129,8 @@ namespace BrickBreaker
 
         private void LaunchBall(Ball ball)
         {
-            ball.RigidBody2D.AddForce(ball.transform.up * startForce);
+            ball.velocity = (ball.transform.up * startVelocity);
+            //ball.RigidBody2D.AddForce(ball.transform.up * startForce);
             ball.transform.SetParent(null);
         }
     }
