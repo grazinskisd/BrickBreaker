@@ -44,6 +44,7 @@ namespace BrickBreaker
         {
             _spriteRenderer.enabled = false;
             trail.emitting = false;
+            _rigidBody.simulated = false;
             particleSystem.Emit(30);
         }
     }

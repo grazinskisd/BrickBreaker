@@ -4,12 +4,17 @@ using UnityEngine.SceneManagement;
 
 namespace BrickBreaker
 {
+    public delegate void BallEventHandler();
+
     public class GameController : MonoBehaviour
     {
         public Ball[] balls;
         public float startVelocity;
         public LayerMask killBoxLayerMask;
         public float maxBounceAngle;
+
+        public event BallEventHandler OnPadBounce;
+        public event BallEventHandler OnBallDestroy;
 
         private bool _isBallReleased;
         private int _ballCount;
@@ -36,6 +41,7 @@ namespace BrickBreaker
             if (contact.collider.CompareTag("Pad"))
             {
                 BounceBallOffPad(sender, contact);
+                OnPadBounce?.Invoke();
             }
             else
             {
@@ -99,6 +105,7 @@ namespace BrickBreaker
                 sender.StartDestructionSequence();
                 StartCoroutine(DestroyDelayed(sender));
                 _ballCount--;
+                OnBallDestroy?.Invoke();
             }
 
             if(_ballCount == 0)

@@ -3,10 +3,14 @@ using UnityEngine.UI;
 
 namespace BrickBreaker
 {
+    public delegate void PeaceEventHandler();
+
     public class PeacesController : MonoBehaviour
     {
         public Text scoreText;
         public Map map;
+
+        public event PeaceEventHandler OnPeaceDestroyed;
 
         private int _score;
 
@@ -27,6 +31,7 @@ namespace BrickBreaker
             Destroy(sender.gameObject);
             _score++;
             UpdateScoreText();
+            OnPeaceDestroyed?.Invoke();
         }
 
         private void UpdateScoreText()
