@@ -19,7 +19,6 @@ namespace BrickBreaker
                 if (transform.GetChild(i).gameObject.activeInHierarchy)
                 {
                     _pads.Add(transform.GetChild(i).GetChild(0).GetComponent<Pad>());
-                    Debug.Log("Add pad");
                 }
             }
         }

@@ -2,8 +2,8 @@
 
 namespace BrickBreaker
 {
-    public delegate void BallTriggerEnterEventHandler(Collider2D other);
-    public delegate void BallCollisionEnterHandler(Collision2D collision);
+    public delegate void BallTriggerEnterEventHandler(Ball sender, Collider2D other);
+    public delegate void BallCollisionEnterHandler(Ball sender, Collision2D collision);
 
     [RequireComponent(typeof(Rigidbody2D))]
     public class Ball: MonoBehaviour
@@ -20,12 +20,12 @@ namespace BrickBreaker
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            OnCollisionEnter?.Invoke(collision);
+            OnCollisionEnter?.Invoke(this, collision);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            OnTriggerEnter?.Invoke(collision);
+            OnTriggerEnter?.Invoke(this, collision);
         }
 
         public Rigidbody2D RigidBody2D

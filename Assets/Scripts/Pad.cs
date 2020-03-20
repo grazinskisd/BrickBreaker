@@ -85,11 +85,6 @@ namespace BrickBreaker
         //    go.transform.position = point;
         //}
 
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            Debug.Log("PAD COLLISION WITH " + collision.gameObject.name);
-        }
-
         public bool IsLeftEmiting
         {
             set

@@ -15,7 +15,6 @@ namespace BrickBreaker
         private void OnCollisionEnter2D(Collision2D collision)
         {
             OnCollisionEnter?.Invoke(this, collision);
-            Debug.Log("PEACE COLLISION WITH " + collision.gameObject.name);
         }
     }
 }
