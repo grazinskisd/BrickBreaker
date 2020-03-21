@@ -13,8 +13,17 @@ namespace BrickBreaker
         public event PeaceEventHandler OnPeaceDestroyed;
 
         private int _score;
+        private int _peaceCount;
 
-        private void Start()
+        public int PeaceCount
+        {
+            get
+            {
+                return _peaceCount;
+            }
+        }
+
+        private void Awake()
         {
             for (int i = 0; i < map.sets.Count; i++)
             {
@@ -22,6 +31,7 @@ namespace BrickBreaker
                 {
                     Peace peace = map.sets[i].peaces[j];
                     peace.OnCollisionEnter += ProcessPeaceCollision;
+                    _peaceCount++;
                 }
             }
         }

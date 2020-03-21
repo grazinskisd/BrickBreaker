@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -16,37 +17,63 @@ namespace BrickBreaker
         public float startVelocity;
         public LayerMask killBoxLayerMask;
         public float maxBounceAngle;
+        public float maxVelocityIncrease;
 
         [Header("Life setup")]
         public int startLives;
         public Text lifesText;
 
+        [Header("Dependencies")]
+        public PeacesController peacesController;
+
         public event BallEventHandler OnPadBounce;
         public event BallEventHandler OnBallDestroy;
 
-        private Ball[] _balls;
+        private List<Ball> _balls;
         private bool _isBallReleased;
-        private int _ballCount;
 
         private int _currentLives;
+        private int _destroyedPeaces = 0;
 
         private void Start()
         {
             _currentLives = startLives;
             UpdateLivesText();
+            StartSetup();
+            peacesController.OnPeaceDestroyed += IncreaseBallSpeed;
+        }
+
+        private void StartSetup()
+        {
             SetupStartingBalls();
+        }
+
+        private void IncreaseBallSpeed()
+        {
+            _destroyedPeaces++;
+            float totalMultiplier = GetTotalSpeedMultiplier();
+
+            for (int i = 0; i < _balls.Count; i++)
+            {
+                _balls[i].velocity = _balls[i].velocity.normalized * (startVelocity * totalMultiplier);
+            }
+        }
+
+        private float GetTotalSpeedMultiplier()
+        {
+            float destroyedPeacesFrac = (float)_destroyedPeaces / (float)peacesController.PeaceCount;
+            return 1 + maxVelocityIncrease * destroyedPeacesFrac;
         }
 
         private void SetupStartingBalls()
         {
-            _balls = new Ball[startPads.Length];
+            _balls = new List<Ball>(startPads.Length);
             for (int i = 0; i < startPads.Length; i++)
             {
                 Ball ball = Instantiate(ballPrototype, Vector3.zero, Quaternion.identity);
                 SetupBall(startPads[i], ball);
-                _balls[i] = ball;
+                _balls.Add(ball);
             }
-            _ballCount = _balls.Length;
             _isBallReleased = false;
         }
 
@@ -135,14 +162,14 @@ namespace BrickBreaker
                 DestroyBall(sender);
             }
 
-            if (_ballCount == 0)
+            if (_balls.Count == 0)
             {
                 _currentLives--;
                 UpdateLivesText();
 
                 if (_currentLives > 0)
                 {
-                    SetupStartingBalls();
+                    StartSetup();
                 }
                 else
                 {
@@ -157,7 +184,7 @@ namespace BrickBreaker
             sender.OnCollisionEnter -= CheckCollision;
             sender.StartDestructionSequence();
             StartCoroutine(DestroyDelayed(sender));
-            _ballCount--;
+            _balls.Remove(sender);
             OnBallDestroy?.Invoke();
         }
 
@@ -182,7 +209,7 @@ namespace BrickBreaker
         {
             if (Input.GetKeyDown(KeyCode.Space) && !_isBallReleased)
             {
-                for (int i = 0; i < _balls.Length; i++)
+                for (int i = 0; i < _balls.Count; i++)
                 {
                     LaunchBall(_balls[i]);
                 }
@@ -197,7 +224,8 @@ namespace BrickBreaker
 
         private void LaunchBall(Ball ball)
         {
-            ball.velocity = (ball.transform.up * startVelocity);
+            var velocity = (ball.transform.up * startVelocity * GetTotalSpeedMultiplier());
+            ball.velocity = velocity;
             ball.transform.SetParent(null);
         }
     }

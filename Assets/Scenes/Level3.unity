@@ -4752,8 +4752,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   maxBounceAngle: 60
+  maxVelocityIncrease: 1.5
   startLives: 3
   lifesText: {fileID: 1487894907}
+  peacesController: {fileID: 1667759971}
 --- !u!4 &253537496
 Transform:
   m_ObjectHideFlags: 0
