@@ -132,13 +132,10 @@ namespace BrickBreaker
         {
             if (IsLayerInMask(other.gameObject.layer, killBoxLayerMask))
             {
-                sender.StartDestructionSequence();
-                StartCoroutine(DestroyDelayed(sender));
-                _ballCount--;
-                OnBallDestroy?.Invoke();
+                DestroyBall(sender);
             }
 
-            if(_ballCount == 0)
+            if (_ballCount == 0)
             {
                 _currentLives--;
                 UpdateLivesText();
@@ -152,6 +149,16 @@ namespace BrickBreaker
                     StartCoroutine(RestartSceneDelayed());
                 }
             }
+        }
+
+        private void DestroyBall(Ball sender)
+        {
+            sender.OnTriggerEnter -= CheckTrigger;
+            sender.OnCollisionEnter -= CheckCollision;
+            sender.StartDestructionSequence();
+            StartCoroutine(DestroyDelayed(sender));
+            _ballCount--;
+            OnBallDestroy?.Invoke();
         }
 
         private IEnumerator RestartSceneDelayed()
