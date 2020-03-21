@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace BrickBreaker
 {
@@ -8,28 +9,57 @@ namespace BrickBreaker
 
     public class GameController : MonoBehaviour
     {
-        public Ball[] balls;
+        [Header("Ball setup")]
+        public Ball ballPrototype;
+        public Pad[] startPads;
+        public Vector2 ballStartPosition;
         public float startVelocity;
         public LayerMask killBoxLayerMask;
         public float maxBounceAngle;
 
+        [Header("Life setup")]
+        public int startLives;
+        public Text lifesText;
+
         public event BallEventHandler OnPadBounce;
         public event BallEventHandler OnBallDestroy;
 
+        private Ball[] _balls;
         private bool _isBallReleased;
         private int _ballCount;
 
+        private int _currentLives;
+
         private void Start()
         {
-            for (int i = 0; i < balls.Length; i++)
-            {
-                SetupBall(balls[i]);
-            }
-            _ballCount = balls.Length;
+            _currentLives = startLives;
+            UpdateLivesText();
+            SetupStartingBalls();
         }
 
-        private void SetupBall(Ball ball)
+        private void SetupStartingBalls()
         {
+            _balls = new Ball[startPads.Length];
+            for (int i = 0; i < startPads.Length; i++)
+            {
+                Ball ball = Instantiate(ballPrototype, Vector3.zero, Quaternion.identity);
+                SetupBall(startPads[i], ball);
+                _balls[i] = ball;
+            }
+            _ballCount = _balls.Length;
+            _isBallReleased = false;
+        }
+
+        private void UpdateLivesText()
+        {
+            lifesText.text = _currentLives.ToString();
+        }
+
+        private void SetupBall(Pad pad, Ball ball)
+        {
+            ball.transform.SetParent(pad.transform);
+            ball.transform.localPosition = ballStartPosition;
+
             ball.OnTriggerEnter += CheckTrigger;
             ball.OnCollisionEnter += CheckCollision;
         }
@@ -110,7 +140,17 @@ namespace BrickBreaker
 
             if(_ballCount == 0)
             {
-                StartCoroutine(RestartSceneDelayed());
+                _currentLives--;
+                UpdateLivesText();
+
+                if (_currentLives > 0)
+                {
+                    SetupStartingBalls();
+                }
+                else
+                {
+                    StartCoroutine(RestartSceneDelayed());
+                }
             }
         }
 
@@ -135,9 +175,9 @@ namespace BrickBreaker
         {
             if (Input.GetKeyDown(KeyCode.Space) && !_isBallReleased)
             {
-                for (int i = 0; i < balls.Length; i++)
+                for (int i = 0; i < _balls.Length; i++)
                 {
-                    LaunchBall(balls[i]);
+                    LaunchBall(_balls[i]);
                 }
                 _isBallReleased = true;
             }
@@ -151,7 +191,6 @@ namespace BrickBreaker
         private void LaunchBall(Ball ball)
         {
             ball.velocity = (ball.transform.up * startVelocity);
-            //ball.RigidBody2D.AddForce(ball.transform.up * startForce);
             ball.transform.SetParent(null);
         }
     }
