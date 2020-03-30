@@ -32,11 +32,29 @@ namespace BrickBreaker
 
             if (Input.GetKey(KeyCode.A))
             {
-                MovePads(-1);
+                MovePads(-moveSpeed);
             }
             else if (Input.GetKey(KeyCode.D))
             {
-                MovePads(1);
+                MovePads(moveSpeed);
+            }
+
+            UpdatePositionByMouse();
+        }
+
+        private void UpdatePositionByMouse()
+        {
+            Vector3 mouseScreenPosition = Input.mousePosition;
+            mouseScreenPosition.z = Camera.main.transform.position.z;
+            Vector3 mousePositionInWorld = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+            float xPosition = Mathf.Clamp(mousePositionInWorld.x, minX, maxX);
+
+            for (int i = 0; i < _pads.Count; i++)
+            {
+                Pad pad = _pads[i];
+                Vector3 position = pad.transform.localPosition;
+                position.x = xPosition;
+                pad.transform.localPosition = position;
             }
         }
 
@@ -44,20 +62,20 @@ namespace BrickBreaker
         {
             for (int i = 0; i < _pads.Count; i++)
             {
-                _pads[i].SetThrustEmiting(0);
+                _pads[i].SetThrustDiretion(Direction.None);
             }
         }
 
-        private void MovePads(int directionSign)
+        private void MovePads(float direction)
         {
             for (int i = 0; i < _pads.Count; i++)
             {
                 Pad pad = _pads[i];
                 Vector3 position = pad.transform.localPosition;
-                int direction = (i % 2 == 0 ? -directionSign : directionSign);
-                position.x = Mathf.Clamp(position.x + direction * Time.deltaTime * moveSpeed, minX, maxX);
+                direction = (i % 2 == 0 ? -direction : direction);
+                position.x = Mathf.Clamp(position.x + direction * Time.deltaTime, minX, maxX);
                 pad.transform.localPosition = position;
-                pad.SetThrustEmiting(direction);
+                pad.SetThrustDiretion(direction > 0 ? Direction.Right : Direction.Left);
             }
         }
     }

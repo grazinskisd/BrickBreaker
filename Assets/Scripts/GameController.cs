@@ -207,7 +207,7 @@ namespace BrickBreaker
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space) && !_isBallReleased)
+            if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0)) && !_isBallReleased)
             {
                 for (int i = 0; i < _balls.Count; i++)
                 {

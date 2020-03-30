@@ -25,7 +25,7 @@ namespace BrickBreaker
         [SerializeField]
         private bool _shouldDrawBounceLines;
 
-        private int _previousDirection;
+        private Direction _previousDirection;
         private BoxCollider2D _collider;
 
         public BoxCollider2D Collider
@@ -75,7 +75,7 @@ namespace BrickBreaker
                 var right = transform.right * (part * i);
                 point = center + new Vector2(right.x, right.y);
 
-                float angle = AngleDir(Vector3.forward, point, center) * (Vector2.Distance(center, point) / extents.x) * 60;
+                float angle = AngleDir(Vector3.forward, point, center) * (Vector2.Distance(center, point) / extents.x) * 30;
                 Vector2 newVelocityVector = Quaternion.AngleAxis(angle, Vector3.forward) * collisionNormal;
                 Debug.DrawLine(point, point + newVelocityVector, Color.red, 10);
             }
@@ -123,25 +123,27 @@ namespace BrickBreaker
             }
         }
 
-        public void SetThrustEmiting(int direction)
+        public void SetThrustDiretion(Direction direction)
         {
             if (_previousDirection == direction) return;
 
             _previousDirection = direction;
-            if(direction == 0)
+            switch (direction)
             {
-                SetThrustEmiting(_leftThrust, false);
-                SetThrustEmiting(_rightThrust, false);
-            }
-            else if (direction == 1)
-            {
-                SetThrustEmiting(_leftThrust, false);
-                SetThrustEmiting(_rightThrust, true);
-            }
-            else if (direction == -1)
-            {
-                SetThrustEmiting(_leftThrust, true);
-                SetThrustEmiting(_rightThrust, false);
+                case Direction.None:
+                    SetThrustEmiting(_leftThrust, false);
+                    SetThrustEmiting(_rightThrust, false);
+                    break;
+                case Direction.Left:
+                    SetThrustEmiting(_leftThrust, false);
+                    SetThrustEmiting(_rightThrust, true);
+                    break;
+                case Direction.Right:
+                    SetThrustEmiting(_leftThrust, true);
+                    SetThrustEmiting(_rightThrust, false);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -156,5 +158,10 @@ namespace BrickBreaker
                 thrust.Stop();
             }
         }
+    }
+
+    public enum Direction
+    {
+        None, Left, Right
     }
 }

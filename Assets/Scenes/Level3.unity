@@ -4751,7 +4751,7 @@ MonoBehaviour:
   killBoxLayerMask:
     serializedVersion: 2
     m_Bits: 512
-  maxBounceAngle: 60
+  maxBounceAngle: 30
   maxVelocityIncrease: 1.5
   startLives: 3
   lifesText: {fileID: 1487894907}
