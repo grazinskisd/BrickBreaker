@@ -69211,6 +69211,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 810754464}
   map: {fileID: 1422151476}
+  destroyFXProto: {fileID: 6367253011695850095, guid: cff3c821d41516d41b1f57dc60234bb3,
+    type: 3}
 --- !u!4 &1667759972
 Transform:
   m_ObjectHideFlags: 0

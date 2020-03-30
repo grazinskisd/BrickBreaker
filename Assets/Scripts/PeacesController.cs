@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace BrickBreaker
@@ -9,6 +10,7 @@ namespace BrickBreaker
     {
         public Text scoreText;
         public Map map;
+        public ParticleSystem destroyFXProto;
 
         public event PeaceEventHandler OnPeaceDestroyed;
 
@@ -38,10 +40,24 @@ namespace BrickBreaker
 
         private void ProcessPeaceCollision(Peace sender, Collision2D collision)
         {
-            Destroy(sender.gameObject);
+            var destroyEffect = Instantiate(destroyFXProto);
+            var shape = destroyEffect.shape;
+            shape.spriteRenderer = sender.spriteRenderer;
+            var main = destroyEffect.main;
+            main.startColor = sender.spriteRenderer.color;
+
+            sender.gameObject.SetActive(false);
+            StartCoroutine(DestroyDelayed(sender, main.startLifetime.constant));
+
             _score++;
             UpdateScoreText();
             OnPeaceDestroyed?.Invoke();
+        }
+
+        private IEnumerator DestroyDelayed(Peace peace, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Destroy(peace.gameObject);
         }
 
         private void UpdateScoreText()
