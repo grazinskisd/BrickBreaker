@@ -4751,7 +4751,7 @@ MonoBehaviour:
   killBoxLayerMask:
     serializedVersion: 2
     m_Bits: 512
-  maxBounceAngle: 30
+  maxBounceAngle: 60
   maxVelocityIncrease: 1.5
   startLives: 3
   lifesText: {fileID: 1487894907}
@@ -23312,8 +23312,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -36.4, y: 0, z: 0}
-  - {x: 23.42, y: 0, z: 1}
+  - {x: -5.3, y: 0, z: 0}
+  - {x: 5.3, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -29613,8 +29613,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fd612cbb984a640bdd148bd274322b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minX: -3.5
-  maxX: 3.5
+  minX: -5.3
+  maxX: 5.3
   moveSpeed: 8
 --- !u!4 &819594656
 Transform:
@@ -47202,8 +47202,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -36.4, y: 0, z: 0}
-  - {x: 23.42, y: 0, z: 1}
+  - {x: -5.3, y: 0, z: 0}
+  - {x: 5.3, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -50142,8 +50142,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -36.4, y: 0, z: 0}
-  - {x: 23.42, y: 0, z: 1}
+  - {x: -5.3, y: 0, z: 0}
+  - {x: 5.3, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -59672,8 +59672,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -36.4, y: 0, z: 0}
-  - {x: 23.42, y: 0, z: 1}
+  - {x: -5.3, y: 0, z: 0}
+  - {x: 5.3, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -74479,8 +74479,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -36.4, y: 0, z: 0}
-  - {x: 23.42, y: 0, z: 1}
+  - {x: -5.3, y: 0, z: 0}
+  - {x: 5.3, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -89180,8 +89180,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -36.4, y: 0, z: 0}
-  - {x: 23.42, y: 0, z: 1}
+  - {x: -5.3, y: 0, z: 0}
+  - {x: 5.3, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
