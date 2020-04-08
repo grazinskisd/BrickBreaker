@@ -12,6 +12,8 @@ namespace BrickBreaker
         public Map map;
         public ParticleSystem destroyFXProto;
 
+        public Peace debugPece;
+
         public event PeaceEventHandler OnPeaceDestroyed;
 
         private int _score;
@@ -38,20 +40,53 @@ namespace BrickBreaker
             }
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                ProcessPeaceCollision(debugPece, null);
+            }
+        }
+
         private void ProcessPeaceCollision(Peace sender, Collision2D collision)
         {
-            var destroyEffect = Instantiate(destroyFXProto);
-            var shape = destroyEffect.shape;
-            shape.spriteRenderer = sender.spriteRenderer;
-            var main = destroyEffect.main;
-            main.startColor = sender.spriteRenderer.color;
+            Flower flower = sender.GetComponent<Flower>();
 
-            sender.gameObject.SetActive(false);
-            StartCoroutine(DestroyDelayed(sender, main.startLifetime.constant));
+            if (flower != null)
+            {
+                for (int i = 0; i < flower.Peaces.Length; i++)
+                {
+                    var peace = flower.Peaces[i];
+                    if (peace != null && peace.isActiveAndEnabled)
+                    {
+                        DestroyPeace(flower.Peaces[i]);
+                    }
+                }
+            }
+            DestroyPeace(sender);
+        }
+
+        private void DestroyPeace(Peace peace)
+        {
+            peace.OnCollisionEnter -= ProcessPeaceCollision;
+
+            var main = CreateDestroyEffect(peace);
+            peace.gameObject.SetActive(false);
+            StartCoroutine(DestroyDelayed(peace, main.startLifetime.constant));
 
             _score++;
             UpdateScoreText();
             OnPeaceDestroyed?.Invoke();
+        }
+
+        private ParticleSystem.MainModule CreateDestroyEffect(Peace peace)
+        {
+            var destroyEffect = Instantiate(destroyFXProto);
+            var shape = destroyEffect.shape;
+            shape.spriteRenderer = peace.spriteRenderer;
+            var main = destroyEffect.main;
+            main.startColor = peace.spriteRenderer.color;
+            return main;
         }
 
         private IEnumerator DestroyDelayed(Peace peace, float delay)
