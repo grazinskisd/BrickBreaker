@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b7627c5e09cc82429896929ca262aa8, type: 3}
   m_Name: Arch Pad Path
   m_EditorClassIdentifier: 
-  pathSegments: 10
-  maxPadAngle: 30
+  pathSegments: 20
+  maxPadAngle: 90
   pathYOffset: -9.15
   maxAngle: 90

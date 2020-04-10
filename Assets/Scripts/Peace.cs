@@ -8,9 +8,15 @@ namespace BrickBreaker
 
     public class Peace : MonoBehaviour
     {
+        [HideInInspector]
         public SpriteRenderer spriteRenderer;
 
         public event PeaceCollisionHandler OnCollisionEnter;
+
+        private void Awake()
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
