@@ -164,7 +164,7 @@ namespace BrickBreaker
 
             if (_balls.Count == 0)
             {
-                _currentLives--;
+                //_currentLives--;
                 UpdateLivesText();
 
                 if (_currentLives > 0)
