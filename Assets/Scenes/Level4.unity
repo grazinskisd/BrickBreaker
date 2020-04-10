@@ -30913,12 +30913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 8
-  isLinearMovement: 0
-  pathYOffset: -9.15
-  maxX: 5.3
-  maxAngle: 90
-  maxPadAngle: 30
-  pathSegments: 10
+  padPath: {fileID: 11400000, guid: e9d3d2f939885d74990ded3601b11248, type: 2}
 --- !u!4 &819594656
 Transform:
   m_ObjectHideFlags: 0
