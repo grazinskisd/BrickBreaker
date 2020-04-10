@@ -12,10 +12,10 @@ namespace BrickBreaker
 
         public override Vector3[] GetPathPoints()
         {
-            Vector3[] arcPoints = new Vector3[pathSegments];
+            Vector3[] arcPoints = new Vector3[pathSegments+1];
             float angle = -maxPadAngle;
             float arcLength = 2 * maxPadAngle;
-            for (int i = 0; i < pathSegments; i++)
+            for (int i = 0; i <= pathSegments; i++)
             {
                 float x = Mathf.Sin(Mathf.Deg2Rad * angle) * pathYOffset;
                 float y = Mathf.Cos(Mathf.Deg2Rad * angle) * pathYOffset;
