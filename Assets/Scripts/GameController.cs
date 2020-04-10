@@ -86,6 +86,7 @@ namespace BrickBreaker
         {
             ball.transform.SetParent(pad.transform);
             ball.transform.localPosition = ballStartPosition;
+            ball.transform.localRotation = Quaternion.identity;
 
             ball.OnTriggerEnter += CheckTrigger;
             ball.OnCollisionEnter += CheckCollision;
@@ -224,9 +225,10 @@ namespace BrickBreaker
 
         private void LaunchBall(Ball ball)
         {
+            ball.transform.SetParent(null);
             var velocity = (ball.transform.up * startVelocity * GetTotalSpeedMultiplier());
             ball.velocity = velocity;
-            ball.transform.SetParent(null);
+            ball.trail.emitting = true;
         }
     }
 }

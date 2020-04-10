@@ -23,6 +23,7 @@ namespace BrickBreaker
             _rigidBody = GetComponent<Rigidbody2D>();
             _rigidBody.isKinematic = false;
             _spriteRenderer = GetComponent<SpriteRenderer>();
+            trail.emitting = false;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -37,7 +38,7 @@ namespace BrickBreaker
 
         private void FixedUpdate()
         {
-            transform.Translate(velocity * Time.deltaTime);
+            transform.Translate(velocity * Time.deltaTime, Space.World);
         }
 
         public void StartDestructionSequence()
