@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Arch Pad Path
   m_EditorClassIdentifier: 
   pathSegments: 20
-  maxPadAngle: 90
+  maxPadAngle: 45
   pathYOffset: -9.15
   maxAngle: 90
